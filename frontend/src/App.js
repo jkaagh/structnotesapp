@@ -3,9 +3,8 @@ import React, {useState, useEffect} from "react";
 import uuid from "react-uuid"
 
 import ComponentMapper from "./Components/ComponentMapper";
+import EditorMenu from "./Components/EditorMenu";
 
-import { EditorContent, useEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
 
 let data = [
     {   
@@ -84,8 +83,15 @@ let data = [
     
 ]
 
+if(localStorage.getItem("data") == undefined){
+    localStorage.setItem("data", JSON.stringify(data))
+}
 export const SaveContext = React.createContext()
 export const EnterContext = React.createContext()
+export const EditorContext = React.createContext()
+export const SelectedIdContext = React.createContext()
+export const UpdateSelectedContext = React.createContext()
+
 
 function App() {
 
@@ -96,7 +102,7 @@ function App() {
 
     
 
-    //todo experiment with literally just let variables, since this entire component is never re-rendered.
+    //use 
 
 
     //expendable. used once to make components render, never touched again.
@@ -112,8 +118,16 @@ function App() {
     //only used to re-render when nescesarry. essentially setRenderData(saveData) just to rerender.
     const [renderData, setRenderData] = useState(JSON.parse(window.localStorage.getItem("data")))
 
+    const [menuArray, setMenuArray] = useState([])
+
+    const [selectedId, setSelectedId] = useState([2])
+
+
+  
+
+    //idk what this does
     useEffect(() => {
-        console.log(renderData)
+        // console.log(renderData)
     }, [renderData])  
 
     const handleUpdateTextField = ({id, value}) => {
@@ -147,41 +161,52 @@ function App() {
     }
 
 
-    const handleEnter = ({id}) => {
-        return
+    const handleEnter = (props) => {
+        
         let test = [...saveData]
-
-        
-
-        
       
         //generate a new textfield object. todo insert leftover text into content.
-        let newid = uuid()
-        let newComponent = {
-            
-            Content:  newid.toString(), 
+
+        // let newComponent = {
+        //     Content: props.value , 
+        //     ComponentType: "TextField",
+        //     id: uuid()
+        // }
+
+        const newComponent = {
+            Content: "test",
             ComponentType: "TextField",
-            id: newid,
-       
+            id: uuid(),
         }
 
-        //loop throuh entire save file tree to figure out where to inject it.
-        let newSave = newTextFieldRecursion(saveData, newComponent, id)
+        const copiedData = JSON.parse(JSON.stringify(saveData))
+        const updatedData = newTextFieldRecursion(copiedData, newComponent, props.id)
+        window.localStorage.setItem("data", JSON.stringify(updatedData))
+        // setRenderData(updatedData)
+
+
         
 
-        //save new edited array to localstorage.
-        window.localStorage.setItem("data", JSON.stringify(newSave)) //this works perfectly.
 
 
 
-        //update renderData to re-render with new dom elements.
+        // //loop throuh entire save file tree to figure out where to inject it.
+        // let newSave = newTextFieldRecursion(saveData, newComponent, props.id)
+        
 
-        //literally none of these work.
+        // //save new edited array to localstorage.
+        // window.localStorage.setItem("data", JSON.stringify(newSave)) //this works perfectly.
 
-        //setRenderData(saveData) 
-        setRenderData(newSave) 
-        // setRenderData(JSON.parse(window.localStorage.getItem("data")))
-        //https://blog.logrocket.com/a-guide-to-usestate-in-react-ecb9952e406c/#howtoupdatestateinanestedobjectinreactwithhooks
+
+
+        // //update renderData to re-render with new dom elements.
+
+        // //literally none of these work.
+
+        // //setRenderData(saveData) 
+        // setRenderData(newSave) 
+        // // setRenderData(JSON.parse(window.localStorage.getItem("data")))
+        // //https://blog.logrocket.com/a-guide-to-usestate-in-react-ecb9952e406c/#howtoupdatestateinanestedobjectinreactwithhooks
 
 
 
@@ -210,18 +235,60 @@ function App() {
 
         return array
     }
-   
+
+    const generateEditorMenus = (editor, id) => {
+        setMenuArray(menuArray => [...menuArray, {editor, id} ])
+    }
+
+    const handleSelect = (id) => {
+        console.log(id)
+        setSelectedId(selectedId => [id])
+    }
+
+
+                    
 
   return (
     <>
 
+        <div>
+            {
+
+
+                selectedId.map((selectedId) => {
+
+                    return(
+                        <div>
+                            {
+                                menuArray.map(({editor, id}) => {
+
+                                    if(selectedId != id) return null
+
+                                    return(
+                                        <>
+                                            <EditorMenu editor={editor.editor} id={id} activeId={selectedId}/>                                       
+                                        </>
+                                    )
+                                })
+                            }
+                        </div>
+                    )
+                })
+            }
+       
+        </div>
+
 
         <div className="textArea">
-            <SaveContext.Provider value={handleUpdateTextField}>
-                <EnterContext.Provider value={handleEnter}>
-                    <ComponentMapper data={renderData}/>
-                </EnterContext.Provider>
-            </SaveContext.Provider>
+            <SelectedIdContext.Provider value={handleSelect}>
+                <EditorContext.Provider value={generateEditorMenus}>
+                    <SaveContext.Provider value={handleUpdateTextField}>
+                        <EnterContext.Provider value={handleEnter}>
+                            <ComponentMapper data={renderData}/>
+                        </EnterContext.Provider>
+                    </SaveContext.Provider>
+                </EditorContext.Provider>
+            </SelectedIdContext.Provider>
         </div>
 
         <div className="rounded bg-purple-300 px-4 py-2" onClick={() => {
@@ -229,9 +296,16 @@ function App() {
         }}> 
             asda
         </div>
+
+        <div>
+ 
+            
+        </div>
+        {/* <Tiptaptemp sex={"asd"}/> */}
     </>
 
   );
 }
 
 export default App;
+

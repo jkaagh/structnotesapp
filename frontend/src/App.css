@@ -5,3 +5,11 @@
 .textArea{
     @apply p-5
 }
+
+.richButton{
+    @apply p-4 border rounded-lg    
+}
+
+.EditorSelected{
+    @apply bg-gray-100 shadow-inner
+}
