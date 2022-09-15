@@ -13,3 +13,9 @@
 .EditorSelected{
     @apply bg-gray-100 shadow-inner
 }
+
+.accordionTransition{
+    transition: height 10s;
+    transition-timing-function: cubic-bezier(1, 0.14, 1, 1);
+   
+}

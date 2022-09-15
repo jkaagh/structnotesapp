@@ -34,7 +34,7 @@ export default function Accordion(props) {
                 </div>
                 <div 
                 
-                className={`px-2 ${closed ? "rotate-180" : ""}`}
+                className={`px-2 cursor-pointer font-bold font-mono select-none ${closed ? "rotate-180" : ""}`}
                 onClick={() => {
                     handleToggle()
                 }}>
@@ -44,8 +44,9 @@ export default function Accordion(props) {
             </div>
 
 
-            {/* stuff inside the thingy */}
-            <div className={`rounded border-l px-2 overflow-hidden ${closed ? "h-0" : ""} `} >
+            {/* ${closed ? "h-0" : ""} */}
+            <div className={`rounded border-l px-2 overflow-hidden accordionTransition  `} 
+            style={{height: closed ? "0px" : ""}}>
                 <ComponentMapper data={props.content}/>
             </div>
 

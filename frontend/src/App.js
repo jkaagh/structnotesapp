@@ -97,6 +97,7 @@ function App() {
 
     const devUpdateSave = () => {
         window.localStorage.setItem("data", JSON.stringify(data))
+        window.location.reload()
     }
 
 
@@ -111,9 +112,9 @@ function App() {
     //copy of savefile, used to update when changes are made.
     //let saveData    = JSON.parse(window.localStorage.getItem("data"))
 
-
-    //stores savefile, gets modified and saved to localstorage
-    const [saveData, setSaveData] = useState(JSON.parse(window.localStorage.getItem("data")))
+    //legacy holy shit this was dumb
+    // //stores savefile, gets modified and saved to localstorage
+    // const [saveData, setSaveData] = useState(JSON.parse(window.localStorage.getItem("data")))
 
     //only used to re-render when nescesarry. essentially setRenderData(saveData) just to rerender.
     const [renderData, setRenderData] = useState(JSON.parse(window.localStorage.getItem("data")))
@@ -125,45 +126,41 @@ function App() {
 
   
 
-    //idk what this does
-    useEffect(() => {
-        // console.log(renderData)
-    }, [renderData])  
 
-    const handleUpdateTextField = ({id, value}) => {
-        //modify savedata array
-        recursion(saveData, id, value) //i didnt think a usestate could be mutated like this and work perfecly, what the fuck?
+    // const handleUpdateTextField = ({id, value}) => {
+    //     //modify savedata array
+    //     recursion(saveData, id, value) //i didnt think a usestate could be mutated like this and work perfecly, what the fuck?
 
-        //save new edited array to localstorage.
-        window.localStorage.setItem("data", JSON.stringify(saveData))
-    }
+    //     //save new edited array to localstorage.
+    //     window.localStorage.setItem("data", JSON.stringify(saveData))
+    // }
     
-    //a function where you pass in an array and loop through each component checking if the ID matches.
-    //in the same function, if you encounter a accordion, call itself and put that acc's array into it. 
-    //If no accord can be found, break out of function and continue to loop through arrays.
-    const recursion = (array, id, value) => {
-        array.forEach(component => {
+    // //a function where you pass in an array and loop through each component checking if the ID matches.
+    // //in the same function, if you encounter a accordion, call itself and put that acc's array into it. 
+    // //If no accord can be found, break out of function and continue to loop through arrays.
+    // const recursion = (array, id, value) => {
+    //     array.forEach(component => {
             
 
-            //if found matching ID
-            if(component.id === id){
+    //         //if found matching ID
+    //         if(component.id === id){
                 
-                //update changes
-                component.Content = value
+    //             //update changes
+    //             component.Content = value
 
-            }
+    //         }
 
-            //if i encounter an accordion, e.g. an array: loop through it.
-            if(component.ComponentType === "Accordion"){
-                recursion(component.Content, id , value)
-            }
-        });
-    }
+    //         //if i encounter an accordion, e.g. an array: loop through it.
+    //         if(component.ComponentType === "Accordion"){
+    //             recursion(component.Content, id , value)
+    //         }
+    //     });
+    // }
 
 
     const handleEnter = (props) => {
         
-        let test = [...saveData]
+        
       
         //generate a new textfield object. todo insert leftover text into content.
 
@@ -174,15 +171,23 @@ function App() {
         // }
 
         const newComponent = {
-            Content: "test",
+            Content: props.value,
             ComponentType: "TextField",
             id: uuid(),
         }
 
-        const copiedData = JSON.parse(JSON.stringify(saveData))
-        const updatedData = newTextFieldRecursion(copiedData, newComponent, props.id)
+
+        //this should probably just fetch from localstorage
+        const copiedData = JSON.parse(localStorage.getItem("data"))
+        
+        const updatedData = JSON.parse(JSON.stringify( newTextFieldRecursion(copiedData, newComponent, props.id)))
+
+        console.log(copiedData)
+        console.log(updatedData)
         window.localStorage.setItem("data", JSON.stringify(updatedData))
-        // setRenderData(updatedData)
+
+
+        setRenderData(updatedData)
 
 
         
@@ -214,12 +219,13 @@ function App() {
 
     const newTextFieldRecursion = (array, newComponent, id) => {
         //id being the id of the textfield i pressed enter inside of.
-
+        
         array.forEach((component, index) => {
             
             //if found matching ID
             if(component.id === id){
                 
+                console.log(array)
                 //handle inject newComponent
                 array.splice(index+1, 0, newComponent)
                 console.log(array)
@@ -282,11 +288,11 @@ function App() {
         <div className="textArea">
             <SelectedIdContext.Provider value={handleSelect}>
                 <EditorContext.Provider value={generateEditorMenus}>
-                    <SaveContext.Provider value={handleUpdateTextField}>
+                    {/* <SaveContext.Provider value={handleUpdateTextField}> */}
                         <EnterContext.Provider value={handleEnter}>
                             <ComponentMapper data={renderData}/>
                         </EnterContext.Provider>
-                    </SaveContext.Provider>
+                    {/* </SaveContext.Provider> */}
                 </EditorContext.Provider>
             </SelectedIdContext.Provider>
         </div>
@@ -294,7 +300,7 @@ function App() {
         <div className="rounded bg-purple-300 px-4 py-2" onClick={() => {
             devUpdateSave()
         }}> 
-            asda
+            reset data
         </div>
 
         <div>
