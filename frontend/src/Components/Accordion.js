@@ -45,10 +45,9 @@ export default function Accordion(props) {
 
 
             {/* ${closed ? "h-0" : ""} */}
-            <div className={`rounded border-l px-2 overflow-hidden accordionTransition  `} 
-            style={{height: closed ? "0px" : ""}}>
+            <div className={`rounded border-l px-2 overflow-hidden accordionTransition ${closed ? "h-0" : ""}  `}>
                 <ComponentMapper data={props.content}/>
-            </div>
+            </div>  
 
         </div>
             
