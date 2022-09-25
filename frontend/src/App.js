@@ -115,34 +115,7 @@ function App() {
     // window.localStorage.setItem('data', JSON.stringify(renderData));
   }, [renderData]);
 
-  // const handleUpdateTextField = ({id, value}) => {
-  //     //modify savedata array
-  //     recursion(saveData, id, value) //i didnt think a usestate could be mutated like this and work perfecly, what the fuck?
 
-  //     //save new edited array to localstorage.
-  //     window.localStorage.setItem("data", JSON.stringify(saveData))
-  // }
-
-  // //a function where you pass in an array and loop through each component checking if the ID matches.
-  // //in the same function, if you encounter a accordion, call itself and put that acc's array into it.
-  // //If no accord can be found, break out of function and continue to loop through arrays.
-  // const recursion = (array, id, value) => {
-  //     array.forEach(component => {
-
-  //         //if found matching ID
-  //         if(component.id === id){
-
-  //             //update changes
-  //             component.Content = value
-
-  //         }
-
-  //         //if i encounter an accordion, e.g. an array: loop through it.
-  //         if(component.ComponentType === "Accordion"){
-  //             recursion(component.Content, id , value)
-  //         }
-  //     });
-  // }
 
   const handleEnter = props => {
     //generate a new textfield object. todo insert leftover text into content.

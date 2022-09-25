@@ -71,15 +71,15 @@ export default function TextField(props) {
   });
 
   const handleUpdate = ({ id, value }) => {
-    // const newItems = recursion(renderData, id, value);
-    // setRenderData(newItems);
+    const newItems = recursion(renderData, id, value);
+    setRenderData(newItems);
   };
 
   //a function where you pass in an array and loop through each component checking if the ID matches.
   //in the same function, if you encounter a accordion, call itself and put that acc's array into it.
   //If no accord can be found, break out of function and continue to loop through arrays.
   const recursion = (array, id, value) => {
-    const temp = array;
+    const temp = array; //maybe do the json hack here?
 
     temp.forEach(component => {
       //if found matching ID
