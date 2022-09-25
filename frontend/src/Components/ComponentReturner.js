@@ -4,6 +4,8 @@ import TextField from "./TextField"
 
 const ComponentReturner = (item) => {
 
+    console.log(item.Content)
+
     if(item.ComponentType === "TextField"){
         return <TextField content={item.Content} id={item.id}/>
     } 

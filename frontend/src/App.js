@@ -160,60 +160,41 @@ function App() {
 
     const handleEnter = (props) => {
         
-        
-      
         //generate a new textfield object. todo insert leftover text into content.
-
-        // let newComponent = {
-        //     Content: props.value , 
-        //     ComponentType: "TextField",
-        //     id: uuid()
-        // }
-
         const newComponent = {
             Content: props.value,
             ComponentType: "TextField",
             id: uuid(),
         }
 
-
-        //this should probably just fetch from localstorage
         const copiedData = JSON.parse(localStorage.getItem("data"))
         
+        //does get updated/changed, as explained in next comment
         const updatedData = JSON.parse(JSON.stringify( newTextFieldRecursion(copiedData, newComponent, props.id)))
 
-        console.log(copiedData)
-        console.log(updatedData)
+        // console.log(copiedData)
+        // console.log(updatedData)
+
+        //works perfectly. when i refresh page its the correct data. 
         window.localStorage.setItem("data", JSON.stringify(updatedData))
 
 
-        setRenderData(updatedData)
+        let testData = [
+            {   
+                id: "1",
+                ComponentType: "TextField",
+                Content: "LINE ONE"           
+            },
+            {   
+                id: "2",
+                ComponentType: "TextField",
+                Content: "LINE TWO"           
+            },    
+        ]
 
-
-        
-
-
-
-
-        // //loop throuh entire save file tree to figure out where to inject it.
-        // let newSave = newTextFieldRecursion(saveData, newComponent, props.id)
-        
-
-        // //save new edited array to localstorage.
-        // window.localStorage.setItem("data", JSON.stringify(newSave)) //this works perfectly.
-
-
-
-        // //update renderData to re-render with new dom elements.
-
-        // //literally none of these work.
-
-        // //setRenderData(saveData) 
-        // setRenderData(newSave) 
-        // // setRenderData(JSON.parse(window.localStorage.getItem("data")))
-        // //https://blog.logrocket.com/a-guide-to-usestate-in-react-ecb9952e406c/#howtoupdatestateinanestedobjectinreactwithhooks
-
-
+        //setting this to testData sets the correct amount of lines (2) like previous code, 
+        //but the text doesn't get updated properly. 
+        setRenderData(testData)
 
     }
 
@@ -225,10 +206,10 @@ function App() {
             //if found matching ID
             if(component.id === id){
                 
-                console.log(array)
+                // console.log(array)
                 //handle inject newComponent
                 array.splice(index+1, 0, newComponent)
-                console.log(array)
+                // console.log(array)
 
             }
 
@@ -247,7 +228,7 @@ function App() {
     }
 
     const handleSelect = (id) => {
-        console.log(id)
+        // console.log(id)
         setSelectedId(selectedId => [id])
     }
 

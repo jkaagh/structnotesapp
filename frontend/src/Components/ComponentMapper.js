@@ -3,8 +3,10 @@ import ComponentReturner from './ComponentReturner'
 
 export default function ComponentMapper({data}) {
 
+    
+
     useEffect(() => {
-        // console.log(data)
+        
     }, [data])
     
 
