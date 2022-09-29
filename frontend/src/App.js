@@ -4,6 +4,7 @@ import uuid from "react-uuid"
 
 import ComponentMapper from "./Components/ComponentMapper";
 import EditorMenu from "./Components/EditorMenu";
+import JumpDown from "./Components/JumpDown";
 
 
 let data = [
@@ -21,26 +22,31 @@ let data = [
         id: "3",
         ComponentType: "Accordion",
         Title: "accordion title goes here",
+        // ParentPath: [2], //2 because its 3rd in array position
         Content: [
             {
                 id: "4",
                 ComponentType: "TextField",
-                Content: "i am inside accordion"
+                Content: "i am inside accordion",
+                // ParentPath: [2, 0] //parents path and its own position
             },
             {
                 id: "5",
                 ComponentType: "TextField",
-                Content: "Me too!!!"
+                Content: "Me too!!!",
             },        
             {
                 id: "6",
                 ComponentType: "Accordion",
                 Title: "accordion title goes here",
+                // ParentPath: [2, 2],
                 Content: [
                     {
                         id: "7",
                         ComponentType: "TextField",
-                        Content: "Me too!!!"
+                        Content: "Me too!!!",
+                        // ParentPath: [2, 2, 0]
+                       
                     },     
                 ]
             }    
@@ -103,60 +109,17 @@ function App() {
 
     
 
-    //use 
 
-
-    //expendable. used once to make components render, never touched again.
-    //const expData   = JSON.parse(window.localStorage.getItem("data"))
-    
-    //copy of savefile, used to update when changes are made.
-    //let saveData    = JSON.parse(window.localStorage.getItem("data"))
-
-    //legacy holy shit this was dumb
-    // //stores savefile, gets modified and saved to localstorage
-    // const [saveData, setSaveData] = useState(JSON.parse(window.localStorage.getItem("data")))
 
     //only used to re-render when nescesarry. essentially setRenderData(saveData) just to rerender.
     const [renderData, setRenderData] = useState(JSON.parse(window.localStorage.getItem("data")))
 
+    //for handling menubar.
     const [menuArray, setMenuArray] = useState([])
-
     const [selectedId, setSelectedId] = useState([2])
 
 
   
-
-
-    // const handleUpdateTextField = ({id, value}) => {
-    //     //modify savedata array
-    //     recursion(saveData, id, value) //i didnt think a usestate could be mutated like this and work perfecly, what the fuck?
-
-    //     //save new edited array to localstorage.
-    //     window.localStorage.setItem("data", JSON.stringify(saveData))
-    // }
-    
-    // //a function where you pass in an array and loop through each component checking if the ID matches.
-    // //in the same function, if you encounter a accordion, call itself and put that acc's array into it. 
-    // //If no accord can be found, break out of function and continue to loop through arrays.
-    // const recursion = (array, id, value) => {
-    //     array.forEach(component => {
-            
-
-    //         //if found matching ID
-    //         if(component.id === id){
-                
-    //             //update changes
-    //             component.Content = value
-
-    //         }
-
-    //         //if i encounter an accordion, e.g. an array: loop through it.
-    //         if(component.ComponentType === "Accordion"){
-    //             recursion(component.Content, id , value)
-    //         }
-    //     });
-    // }
-
 
     const handleEnter = (props) => {
         
@@ -228,8 +191,12 @@ function App() {
     }
 
     const handleSelect = (id) => {
-        // console.log(id)
+        console.log(id)
         setSelectedId(selectedId => [id])
+    }
+
+    const handleJumpDown = () => {
+
     }
 
 
@@ -238,7 +205,7 @@ function App() {
   return (
     <>
 
-        <div>
+        <div className="flex">
             {
 
 
@@ -262,7 +229,8 @@ function App() {
                     )
                 })
             }
-       
+
+            <JumpDown selectedId={selectedId}/>
         </div>
 
 

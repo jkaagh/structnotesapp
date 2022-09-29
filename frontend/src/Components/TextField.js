@@ -7,7 +7,8 @@ import StarterKit from '@tiptap/starter-kit'
 
 export default function TextField(props) {
 
-    const HandleSave = useContext(SaveContext)
+    console.log(props.content)
+    
     const HandleEnter = useContext(EnterContext)
     const HandleEditor = useContext(EditorContext)
     const HandleSelect   = useContext(SelectedIdContext)
@@ -19,7 +20,7 @@ export default function TextField(props) {
         onCreate: (editor) => {
 
             
-
+            console.log("created!")
             //used to generate array of editor references for rendering menus.
             HandleEditor(editor, props.id);
             
@@ -37,12 +38,12 @@ export default function TextField(props) {
                 }
             })
             
-            console.log(editor)
+            // console.log(editor)
         },
         onUpdate: ({editor}) => {
             handleUpdate({id: props.id, value: editor.getJSON()})
 
-            console.log(editor)
+            // console.log(editor)
 
          
 
@@ -52,10 +53,21 @@ export default function TextField(props) {
             
 
             if(editor.options.editorProps.attributes.canUpdate == false){
+                
+                // editor.commands.setContent(props.content)
+
+                // editor.setOptions({
+                //     editorProps:{
+                //         attributes:{
+                //             canUpdate: true
+                //         }
+                //     }
+                // })
+
                 return
             }
 
-            console.log("this ran")
+           
 
             //run this if on a newline at position 0
             if(transaction.curSelection.$head.parentOffset == 0 && transaction.curSelection.head != 1){
@@ -63,7 +75,7 @@ export default function TextField(props) {
              
                 //grabs stuff from next line
                 let restOfLine = editor.getJSON().content[1]
-                console.log(restOfLine)
+              
                 //delete the line
                 editor.chain().selectNodeForward().deleteNode('paragraph').setTextSelection(2).run() 
 
@@ -87,6 +99,22 @@ export default function TextField(props) {
         content: props.content,
         
     })
+
+    const editorRef = useRef(editor)
+
+
+    useEffect(() => {
+        console.log("props content changed!")
+
+        if(editorRef.current == null){
+            console.log(editorRef.current)
+            return
+        }      
+        
+        editorRef.current.commands.setContent(props.content)
+
+    }, [props.content])
+    
 
     const handleUpdate = ({id, value}) => {
 

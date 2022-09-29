@@ -2,16 +2,15 @@ import Accordion from "./Accordion"
 import TextField from "./TextField"
 
 
-const ComponentReturner = (item) => {
+const ComponentReturner = (item, patharray, index) => {
 
-    console.log(item.Content)
 
     if(item.ComponentType === "TextField"){
-        return <TextField content={item.Content} id={item.id}/>
+        return <TextField content={item.Content} id={item.id} path={patharray}/>
     } 
 
     if(item.ComponentType === "Accordion"){
-        return <Accordion title={item.Title} content={item.Content} id={item.id}/>
+        return <Accordion title={item.Title} content={item.Content} id={item.id} path={patharray}/>
     }
 
 }

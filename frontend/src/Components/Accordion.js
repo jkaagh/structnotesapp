@@ -3,6 +3,10 @@ import ComponentMapper from './ComponentMapper'
 
 export default function Accordion(props) {
 
+  
+
+    
+
     const [closed, setClosed] = useState(false) //todo eventually fetch starting position from savefile
     const [heightClass, setHeightClass] = useState("")
 
@@ -47,7 +51,7 @@ export default function Accordion(props) {
             {/* ${closed ? "h-0" : ""} */}
             <div className={`rounded border-l px-2 overflow-hidden accordionTransition  `} 
             style={{height: closed ? "0px" : ""}}>
-                <ComponentMapper data={props.content}/>
+                <ComponentMapper data={props.content} path={props.path}/>
             </div>
 
         </div>
