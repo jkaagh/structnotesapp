@@ -19,7 +19,9 @@ export default function TextField(props) {
         
         onCreate: (editor) => {
 
-            
+
+            //gets run on page load, but not when this component is re-rendered. 
+            //I need some code to run in here on component re-render. 
             console.log("created!")
             //used to generate array of editor references for rendering menus.
             HandleEditor(editor, props.id);
@@ -37,16 +39,10 @@ export default function TextField(props) {
                     }
                 }
             })
-            
-            // console.log(editor)
+
         },
         onUpdate: ({editor}) => {
             handleUpdate({id: props.id, value: editor.getJSON()})
-
-            // console.log(editor)
-
-         
-
         }, 
         onTransaction({editor, transaction}) {
 
@@ -54,16 +50,6 @@ export default function TextField(props) {
 
             if(editor.options.editorProps.attributes.canUpdate == false){
                 
-                // editor.commands.setContent(props.content)
-
-                // editor.setOptions({
-                //     editorProps:{
-                //         attributes:{
-                //             canUpdate: true
-                //         }
-                //     }
-                // })
-
                 return
             }
 
