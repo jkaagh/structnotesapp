@@ -21,7 +21,7 @@ export default function TextField(props) {
 
 
             //gets run on page load, but not when this component is re-rendered. 
-            //I need some code to run in here on component re-render. 
+            //I need some code to run in here on component re-rende 
             console.log("created!")
             //used to generate array of editor references for rendering menus.
             HandleEditor(editor, props.id);
@@ -70,7 +70,7 @@ export default function TextField(props) {
          
                 
                 //create new TextField component
-                HandleEnter({id: props.id, value: restOfLine})
+                HandleEnter({id: props.id, value: restOfLine})  
             }
       
         },

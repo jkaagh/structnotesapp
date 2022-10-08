@@ -92,6 +92,7 @@ let data = [
 if(localStorage.getItem("data") == undefined){
     localStorage.setItem("data", JSON.stringify(data))
 }
+
 export const SaveContext = React.createContext()
 export const EnterContext = React.createContext()
 export const EditorContext = React.createContext()
@@ -157,7 +158,7 @@ function App() {
 
         //setting this to testData sets the correct amount of lines (2) like previous code, 
         //but the text doesn't get updated properly. 
-        setRenderData(testData)
+        setRenderData(updatedData)
 
     }
 
